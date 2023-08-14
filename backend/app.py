@@ -22,10 +22,26 @@ def save_file(file):
     return file_path
 
 # Utility function to parse LaTeX content
+# def parse_latex(file_path):
+#     with open(file_path, 'r') as file:
+#         content = file.read()
+
+#         # This regex captures the rSection titles and their content up to the next rSection or end of the file
+#         sections = re.findall(r'\\begin\{rSection\}\{(.+?)\}(.*?)\\begin\{rSection\}', content, re.DOTALL | re.IGNORECASE)
+
+#         # If the last section goes until the end of the document, the above pattern might miss it.
+#         if sections and not content.endswith(sections[-1][1]):
+#             last_section_content = content.split(sections[-1][0])[1]
+#             sections.append((sections[-1][0], last_section_content))
+
+#         return sections
 def parse_latex(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
-        sections = re.findall(r'\\section\{(.+?)\}', content)
+
+        # This regex captures the rSection titles and their content up to the corresponding \end{rSection}
+        sections = re.findall(r'\\begin\{rSection\}\{(.+?)\}(.*?)\\end\{rSection\}', content, re.DOTALL | re.IGNORECASE)
+
         return sections
 
 # Endpoint for file uploads
@@ -39,7 +55,8 @@ def upload_file():
     if file and allowed_file(file.filename):
         file_path = save_file(file)
         sections = parse_latex(file_path)
-        return jsonify({'message': 'File uploaded and parsed', 'sections': sections}), 200
+        sections_dict = {title: content for title, content in sections}
+        return jsonify({'message': 'File uploaded and parsed', 'sections': sections_dict}), 200
     else:
         return jsonify({'error': 'Invalid file type'}), 400
 
