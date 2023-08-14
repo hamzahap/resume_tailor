@@ -1,4 +1,4 @@
-# LaTeX Resume Tailor
+# LaTeX Resume Tailor (In Progress)
 
 A local web application to help you tailor your LaTeX resumes based on specific job requirements.
 
