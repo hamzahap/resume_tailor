@@ -46,20 +46,33 @@ function UploadComponent() {
         
     };
 
+    // const generateTailoredLatex = () => {
+
+    //     // Debugging
+    //     // console.log("selectedSections:", selectedSections);
+    //     // console.log("sections:", sections);
+
+    //     const tailoredContent = Object.keys(selectedSections).filter(sectionTitle => selectedSections[sectionTitle]).map(sectionTitle => {
+    //         return `\\section{${sectionTitle}}\n${sections[sectionTitle]}`;
+    //     }).join("\n\n");
+
+    //     console.log("tailoredContent:", tailoredContent);
+
+    //     setTailoredLatex(tailoredContent);
+    // };
+
     const generateTailoredLatex = () => {
-
-        // Debugging
-        // console.log("selectedSections:", selectedSections);
-        // console.log("sections:", sections);
-
-        const tailoredContent = Object.keys(selectedSections).filter(sectionTitle => selectedSections[sectionTitle]).map(sectionTitle => {
+        const orderedSectionTitles = Object.keys(sections); // This will have the rearranged order
+    
+        const tailoredContent = orderedSectionTitles.filter(sectionTitle => selectedSections[sectionTitle]).map(sectionTitle => {
             return `\\section{${sectionTitle}}\n${sections[sectionTitle]}`;
         }).join("\n\n");
-
+    
         console.log("tailoredContent:", tailoredContent);
-
+    
         setTailoredLatex(tailoredContent);
     };
+    
     
 
     
@@ -75,6 +88,28 @@ function UploadComponent() {
             ...prevSections,
             [sectionTitle]: editedContent
         }));
+    };
+
+
+    const moveSection = (sectionTitle, direction) => {
+        const sectionTitles = Object.keys(sections);
+        const index = sectionTitles.indexOf(sectionTitle);
+
+        const newSectionTitles = [...sectionTitles];
+        newSectionTitles.splice(index, 1); // Remove the current title
+        
+        if (direction === "up") {
+            newSectionTitles.splice(index - 1, 0, sectionTitle);
+        } else {
+            newSectionTitles.splice(index + 1, 0, sectionTitle);
+        }
+
+        const newSections = {};
+        newSectionTitles.forEach(title => {
+            newSections[title] = sections[title];
+        });
+
+        setSections(newSections);
     };
     
     
@@ -99,32 +134,39 @@ function UploadComponent() {
             <button onClick={onUpload}>Upload</button>
 
             <div className="section-container">
-            {Object.keys(sections).map(sectionTitle => (
-                <div className="section-item" key={sectionTitle}>
-                    <div className="section-row">
-                    <input 
-                        type="checkbox" 
-                        className="section-checkbox"
-                        checked={selectedSections[sectionTitle] || false} 
-                        onChange={() => toggleSection(sectionTitle)} 
-                    />
-                    <label>{sectionTitle}</label>
-                    <button onClick={() => setEditingSection(sectionTitle)}>Edit</button>
+                {Object.keys(sections).map((sectionTitle, index) => (
+                    <div className="section-item" key={sectionTitle}>
+                        <div className="section-row">
+                            <input 
+                                type="checkbox" 
+                                className="section-checkbox"
+                                checked={selectedSections[sectionTitle] || false} 
+                                onChange={() => toggleSection(sectionTitle)} 
+                            />
+                            <label>{sectionTitle}</label>
+                            <button onClick={() => {
+                                if (editingSection === sectionTitle) {
+                                    setEditingSection(null);
+                                } else {
+                                    setEditingSection(sectionTitle);
+                                }
+                            }}>Edit</button>
+                            {index !== 0 && <button onClick={() => moveSection(sectionTitle, "up")}>↑</button>}
+                            {index !== Object.keys(sections).length - 1 && <button onClick={() => moveSection(sectionTitle, "down")}>↓</button>}
+                        </div>
+                        
+                        {editingSection === sectionTitle && (
+                            <textarea 
+                                value={sections[sectionTitle]}
+                                onChange={e => handleSectionEdit(sectionTitle, e.target.value)}
+                                rows="5" 
+                                cols="50"
+                            ></textarea>
+                        )}
                     </div>
-                    
-                    {editingSection === sectionTitle && (
-                        <textarea 
-                            value={sections[sectionTitle]}
-                            onChange={e => handleSectionEdit(sectionTitle, e.target.value)}
-                            rows="5" 
-                            cols="50"
-                        ></textarea>
-                    )}
-                </div>
                 ))}
-
-
             </div>
+
 
 
             <div className="section-container">

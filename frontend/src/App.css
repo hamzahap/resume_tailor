@@ -39,7 +39,7 @@ input[type="file"] {
 
 button {
   margin-top: 20px;
-  margin-left: 20px;
+  margin-left: 10px; 
   padding: 14px 20px;
   border: none;
   background-color: #4a90e2;  /* Muted blue background */
@@ -63,11 +63,17 @@ div {
   justify-content: space-between;
   width: 100%;
   margin-bottom: 10px;
+  padding: 0 10px; /* Add some horizontal padding for breathing space */
+}
+
+label{
+  padding-top: 20px;
 }
 
 /* Adjustments for the checkbox and its label */
 .section-checkbox {
   margin-right: 10px;
+  margin-top: 20px;
 }
 
 /* Container for sections and their text areas */
