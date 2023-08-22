@@ -1,7 +1,7 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;  /* Light grey background */
-  color: #333;  /* Dark grey text */
+  background-color: #1a1a1a;  /* Dark background */
+  color: #e4e4e4;  /* Light grey text */
   margin: 0;
   padding: 0;
 }
@@ -11,7 +11,7 @@ body {
 }
 
 .App-header {
-  background-color: #333;  /* Dark grey header background */
+  background-color: #333;  /* Darker header background */
   padding: 20px;
   color: white;
   min-height: 100vh;
@@ -22,7 +22,7 @@ body {
 }
 
 h1 {
-  border-bottom: 3px solid red;
+  border-bottom: 3px solid #4a90e2;  /* Use muted blue instead of red */
   display: inline-block;
   padding-bottom: 10px;
   margin-top: 0;
@@ -32,35 +32,80 @@ h1 {
 input[type="file"] {
   margin-top: 20px;
   padding: 10px;
-  border: 1px solid #ddd;  /* Light grey border */
-  background-color: red;
+  border: 1px solid #888888;  /* Medium grey border */
+  background-color: #4a90e2;  /* Muted blue background */
   cursor: pointer;
 }
 
 button {
   margin-top: 20px;
-  padding: 10px 20px;
+  margin-left: 20px;
+  padding: 14px 20px;
   border: none;
-  background-color: black;
+  background-color: #4a90e2;  /* Muted blue background */
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #555;  /* Medium grey on hover */
+  background-color: #357ab7;  /* Slightly darker blue on hover */
 }
 
 div {
   margin-top: 20px;
 }
 
-textarea {
-  width: 80%;
-  margin-top: 20px;
-  padding: 10px;
-  color: red;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
+/* Styling for each section's row */
+.section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
+/* Adjustments for the checkbox and its label */
+.section-checkbox {
+  margin-right: 10px;
+}
+
+/* Container for sections and their text areas */
+.section-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* Center children horizontally */
+  justify-content: center;
+  width: 100%;
+}
+
+/* Styling for individual section elements */
+.section-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* Center children horizontally */
+  width: 80%;  
+  margin: 10px 0;  /* Add some vertical spacing between sections */
+}
+
+.generate-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  color: #e4e4e4;  /* Light grey text */
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  background-color: #333333;  /* Dark grey background */
+  border: 1px solid #888888;  /* Medium grey border */
+  resize: both; /* Allows both horizontal and vertical resizing */
+}
+
+input {
+  margin-left:7px;
+  padding: 10px 20px;
+}

@@ -5,6 +5,8 @@ import re
 
 app = Flask(__name__)
 
+SECTION_IDENTIFIER = "rSection"
+
 # Configuration for file uploads
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'tex'}
@@ -40,9 +42,18 @@ def parse_latex(file_path):
         content = file.read()
 
         # This regex captures the rSection titles and their content up to the corresponding \end{rSection}
-        sections = re.findall(r'\\begin\{rSection\}\{(.+?)\}(.*?)\\end\{rSection\}', content, re.DOTALL | re.IGNORECASE)
+        # sections = re.findall(r'\\begin\{rSection\}\{(.+?)\}(.*?)\\end\{rSection\}', content, re.DOTALL | re.IGNORECASE)
+
+        sections = re.findall(r'\\begin\{' + SECTION_IDENTIFIER + r'\}\{(.*?)\}(.*?)\\end\{' + SECTION_IDENTIFIER + r'\}', content, re.DOTALL)
 
         return sections
+
+@app.route('/set_section_identifier', methods=['POST'])
+def set_section_identifier():
+    global SECTION_IDENTIFIER
+    SECTION_IDENTIFIER = request.json.get('section_identifier', 'rSection')
+    return jsonify(success=True)
+
 
 # Endpoint for file uploads
 @app.route('/upload', methods=['POST'])

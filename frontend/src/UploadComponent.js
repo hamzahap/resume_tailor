@@ -5,6 +5,22 @@ function UploadComponent() {
     const [sections, setSections] = useState({});
     const [selectedSections, setSelectedSections] = useState({});
     const [tailoredLatex, setTailoredLatex] = useState("");
+    const [editingSection, setEditingSection] = useState(null);
+    const [sectionIdentifier, setSectionIdentifier] = useState('');
+
+
+    const handleSetSectionIdentifier = () => {
+        fetch('/set_section_identifier', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                section_identifier: sectionIdentifier
+            })
+        });
+    };
+    
 
     const onFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -32,8 +48,9 @@ function UploadComponent() {
 
     const generateTailoredLatex = () => {
 
-        console.log("selectedSections:", selectedSections);
-        console.log("sections:", sections);
+        // Debugging
+        // console.log("selectedSections:", selectedSections);
+        // console.log("sections:", sections);
 
         const tailoredContent = Object.keys(selectedSections).filter(sectionTitle => selectedSections[sectionTitle]).map(sectionTitle => {
             return `\\section{${sectionTitle}}\n${sections[sectionTitle]}`;
@@ -52,33 +69,72 @@ function UploadComponent() {
             [sectionTitle]: !prevSelected[sectionTitle]
         }));
     };
+
+    const handleSectionEdit = (sectionTitle, editedContent) => {
+        setSections(prevSections => ({
+            ...prevSections,
+            [sectionTitle]: editedContent
+        }));
+    };
+    
     
 
     return (
         <div>
+        <div>
+            <label>
+                Section Identifier : 
+                <input 
+                    type="text" 
+                    value={sectionIdentifier} 
+                    onChange={e => setSectionIdentifier(e.target.value)} 
+                    placeholder="Enter your LaTeX section identifier"
+                />
+            </label>
+            <button onClick={handleSetSectionIdentifier}>Set Identifier</button>
+        </div>
+
+        <div>
             <input type="file" onChange={onFileChange} />
             <button onClick={onUpload}>Upload</button>
-            <div>
-                {Object.keys(sections).map((sectionTitle, index) => (
-                    <div key={index}>
-                        <input 
-                            type="checkbox" 
-                            checked={selectedSections[sectionTitle]} 
-                            onChange={() => toggleSection(sectionTitle)}
-                        />
-                        {sectionTitle}
+
+            <div className="section-container">
+            {Object.keys(sections).map(sectionTitle => (
+                <div className="section-item" key={sectionTitle}>
+                    <div className="section-row">
+                    <input 
+                        type="checkbox" 
+                        className="section-checkbox"
+                        checked={selectedSections[sectionTitle] || false} 
+                        onChange={() => toggleSection(sectionTitle)} 
+                    />
+                    <label>{sectionTitle}</label>
+                    <button onClick={() => setEditingSection(sectionTitle)}>Edit</button>
                     </div>
+                    
+                    {editingSection === sectionTitle && (
+                        <textarea 
+                            value={sections[sectionTitle]}
+                            onChange={e => handleSectionEdit(sectionTitle, e.target.value)}
+                            rows="5" 
+                            cols="50"
+                        ></textarea>
+                    )}
+                </div>
                 ))}
+
+
             </div>
 
 
-
+            <div className="section-container">
             {/* Add the Generate Button */}
-            <button onClick={generateTailoredLatex}>Generate</button>
-
+            <button className="generate-button" onClick={generateTailoredLatex}>Generate</button>
+            </div>
             {/* Display the Tailored LaTeX */}
             <textarea value={tailoredLatex} readOnly rows="10" cols="50"></textarea>
 
+        </div>
         </div>
     );
 }
