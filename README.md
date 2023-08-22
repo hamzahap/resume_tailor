@@ -4,12 +4,15 @@ A local web application to help you tailor your LaTeX resumes based on specific 
 
 ## Overview
 
-Latex Resume Tailor allows users to upload a LaTeX resume with all their experiences, skills, and projects. It then provides an intuitive interface to select specific sections relevant to a job application. With a single click, users can generate a tailored version of their resume, emphasizing only the skills and experiences that matter for the specific role they're applying to.
+Latex Resume Tailor allows users to upload a LaTeX resume with all their experiences, skills, and projects. It then provides an intuitive interface to select, rearrange, and edit specific sections relevant to a job application. With a single click, users can generate a tailored version of their resume, emphasizing only the skills and experiences that matter for the specific role they're applying to.
 
 ## Features
 
 - **File Upload**: Securely upload your LaTeX resumes.
+- **Section Identifier**: Set a custom section identifier to match the LaTeX structure of your resume.
 - **Section Selection**: Check or uncheck the sections you want to include in your tailored resume.
+- **Section Rearrange**: Easily rearrange sections to highlight the most relevant ones.
+- **Section Editing**: Modify the content of any section on-the-fly.
 - **Instant Preview**: Generate and preview a tailored LaTeX resume instantly.
 
 ## Getting Started
